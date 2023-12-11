@@ -122,7 +122,7 @@ header {
     margin-top: 50px;
 }
 
-#roundName{
+#status{
     font-size: 25px;
     font-weight: 700;
     background-color: #8877;
@@ -134,3 +134,6 @@ header {
     width: 150px;
 }
 
+.unclickable{
+    pointer-events: none
+}

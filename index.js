@@ -1,6 +1,7 @@
 const game = ( function (){
 
     let gameboardArray = [[" "," "," "], [" "," "," "], [" "," "," "]]
+    let round = 1
     
     const allpossibilities = [
       // Rows
@@ -108,12 +109,33 @@ const game = ( function (){
       gameboard();
     }
 
-
-  
+    const nextRound = () =>{
+      for(let row = 0; row < 3; row++){
+        for(let col = 0; col < 3; col++){
+          gameboardArray[row][col] = " "
+        }
+      }
+      grid.forEach(box =>{
+        marker = box.querySelector("img")
+        marker.src = " "
+        box.classList.remove("unclickable")
+      })
+      const roundLevel = document.getElementById("roundLevel")
+      round+=1;
+      roundLevel.textContent = "Round " + round;
+    }
     
     const playGame = (p1, p2) => {
         let choice = ""
-        let currentToPlay = p1;
+        
+        //first to put mark per round
+        switch(round % 2){
+          case 1:
+            currentToPlay = p1;
+            break;
+          case 2:
+            currentToPlay = p2;
+        }
 
         grid.forEach( box =>{
           box.addEventListener('click', ()=>{
@@ -124,8 +146,9 @@ const game = ( function (){
                   marker.src = "markers/" + p1.marker +".svg"
                   choice = marker.getAttribute('data-num')
                   inputChoice(p1, choice)
+                  box.classList.add("unclickable");
                   if(haveWinner(p1,p2)){
-                   return;
+                    nextRound()
                   }
                   currentToPlay = p2;
                   break;
@@ -133,14 +156,14 @@ const game = ( function (){
                   marker.src = "markers/" + p2.marker +".svg"
                   choice = marker.getAttribute('data-num')
                   inputChoice(p2, choice)
+                  box.classList.add("unclickable");
                   if(haveWinner(p1,p2)){
-  
-                    return;
+                    nextRound()
                   }
                   currentToPlay = p1;
                   break;
               }
-              box.style.pointerEvents = 'none';
+              
           })
       })
        
