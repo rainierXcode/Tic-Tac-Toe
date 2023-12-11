@@ -28,7 +28,7 @@ const game = ( function (){
     console.log("------------")
     }
     
-    const haveWinner = ({player1Name, player1Marker}, {player2Name, player2Marker}) => {
+    const haveWinner = (p1,p2) => {
     
       let isFull = true;
       
@@ -54,11 +54,11 @@ const game = ( function (){
             let winner = gameboardArray[firstRow][firstCol];
     
             switch(winner){
-              case "X":
-                console.log(player1Name + " Win")
+              case p1.marker:
+                console.log(p1.name + " Win")
                 break;
-              case player2Marker:
-                console.log(player2Name + " Win")
+              case p2.marker:
+                console.log(p2.name + " Win")
                 break;
             }
             return true;
@@ -107,29 +107,42 @@ const game = ( function (){
       }
       gameboard();
     }
+
+
+  
     
     const playGame = (p1, p2) => {
         let choice = ""
-        while(true){
-    
-           
-           console.log(p1.name + " turn");
-           const prompt = require('prompt-sync')();
-           choice = prompt("Choice: ")
-           inputChoice(p1, choice)
-    
-           if(haveWinner(p1,p2)){
-             break;
-           }
-    
-           console.log(p2.name + " turn");
-           choice = prompt("Choice: ")
-           inputChoice(p2, choice)
-    
-           if(haveWinner(p1,p2)){
-             break;
-           }
-        }
+        let currentToPlay = p1;
+
+        grid.forEach( box =>{
+          box.addEventListener('click', ()=>{
+              marker = box.querySelector("img")
+
+              switch(currentToPlay){
+                case p1:
+                  marker.src = "markers/" + p1.marker +".svg"
+                  choice = marker.getAttribute('data-num')
+                  inputChoice(p1, choice)
+                  if(haveWinner(p1,p2)){
+                   return;
+                  }
+                  currentToPlay = p2;
+                  break;
+                case p2:
+                  marker.src = "markers/" + p2.marker +".svg"
+                  choice = marker.getAttribute('data-num')
+                  inputChoice(p2, choice)
+                  if(haveWinner(p1,p2)){
+  
+                    return;
+                  }
+                  currentToPlay = p1;
+                  break;
+              }
+              box.style.pointerEvents = 'none';
+          })
+      })
        
     }
     
@@ -148,11 +161,35 @@ const game = ( function (){
     }
     
     
-    const player1 = new Player("Rainier", "X")
-    const player2 = new Player("David", "O")
+    const player1 = new Player("Player 1", "X")
+    const player2 = new Player("Player 2", "O")
     
+   
+
+
+const playButton = document.querySelector(".play-button-container")
+const startingTitle = document.querySelector(".startingTitle")
+const gameBox = document.querySelector(".game-box")
+const grid = document.querySelectorAll(".gameboard-grid div")
+
+
+ 
+  
+  
+
+function openGame(){
+    startingTitle.style.display = "none"
+    playButton.style.display = "none"
+    gameBox.style.display = "flex"
     game.gameboard();
     game.playGame(player1, player2)
+}
+
+playButton.addEventListener("click", openGame);
+
+
+
+
     
     
     
