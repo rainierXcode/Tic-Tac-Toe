@@ -21,7 +21,7 @@ const game = ( function (){
 
   function updateBox(currentPlayer) {
       const thisBox = this.querySelector("img");
-      thisBox.src = "/markers/mark" + currentPlayer.marker + ".svg";
+      thisBox.src = "../markers/mark" + currentPlayer.marker + ".svg";
       const gridNum = parseInt(thisBox.getAttribute("data-num"))
       this.classList.add("unclickable")
       gameboardArray[ gridNum -1 ] = currentPlayer.marker;
