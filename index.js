@@ -33,7 +33,7 @@ const game = (function () {
     function updateBox(currentPlayer) {
         const thisBox = this.querySelector("img");
         thisBox.style.opacity = 1;
-        thisBox.src = "./markers/mark" + currentPlayer.marker + ".svg";
+        thisBox.src = "markers/mark" + currentPlayer.marker + ".svg";
         const gridNum = parseInt(thisBox.getAttribute("data-num"))
         this.classList.add("unclickable")
         gameboardArray[gridNum - 1] = currentPlayer.marker;
@@ -146,7 +146,7 @@ const game = (function () {
 
             box.addEventListener("mouseenter", () => {
                 const boxImg = box.querySelector("img");
-                boxImg.src = "./markers/mark" + currentPlayer.marker + ".svg";
+                boxImg.src = "markers/mark" + currentPlayer.marker + ".svg";
                 boxImg.classList.add("fadeIn");
                 boxImg.style.opacity = 0.35;
             })
