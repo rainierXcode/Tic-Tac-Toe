@@ -213,3 +213,25 @@ header {
 .gameboard-grid div img[src=""] {
     display: none;
 }
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 1;
+        width: 135px;
+        height: 135px;
+    }
+
+    to{
+        opacity: 0.35;
+        width: 140px;
+        height: 140px;
+    }
+}
+
+
+
+.fadeIn{
+    animation: fadeIn 500ms ease-out;
+}
+

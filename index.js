@@ -11,6 +11,8 @@ const game = (function () {
 
     let gameboardArray = ["", "", "", "", "", "", "", "", ""]
 
+    let round = 1;
+
     let winningPossibilities =
         [
             //row
@@ -39,6 +41,7 @@ const game = (function () {
 
     function reset() {
         const boxGrid = document.querySelectorAll(".gameboard-grid div");
+        round+=1;
         boxGrid.forEach(box => {
             box.classList.remove("unclickable")
             boxImg = box.querySelector("img")
@@ -46,6 +49,13 @@ const game = (function () {
         })
         gameboardArray = gameboardArray.map(() => "");
 
+    }
+
+    function cantClickBoxNow(){
+        const boxGrid = document.querySelectorAll(".gameboard-grid div");
+        boxGrid.forEach(box =>{
+            box.classList.add("unclickable");
+        })
     }
 
     function checkWinner() {
@@ -59,7 +69,6 @@ const game = (function () {
             }
 
             if (gameboardArray[firstGrid] === gameboardArray[secondGrid] && gameboardArray[secondGrid] === gameboardArray[thirdGrid]) {
-                console.log("win")
                 return gameboardArray[firstGrid]
             }
         }
@@ -88,6 +97,9 @@ const game = (function () {
                 p2Turn.textContent = "Your Turn";
                 p1Turn.textContent = "";
                 return;
+            default:
+                p1Turn.textContent = "";
+                p2Turn.textContent = "";
         }
     }
 
@@ -102,13 +114,20 @@ const game = (function () {
                 statusUpdate(p2.name + " Win!")
                 break;
             case "Draw":
-                statusUpdate("Draw")
+                statusName.textContent = "Draw";
                 break;
             default:
                 statusUpdate(currentPlayer.marker)
                 return;
         }
-        reset()
+
+        cantClickBoxNow()
+        statusUpdate("None");
+        setTimeout(()=>{
+            reset();
+            statusName.textContent = "Round " + round;
+            statusUpdate(currentPlayer.marker)
+        }, 3000)
     }
 
     function playGame(p1, p2) {
@@ -123,13 +142,12 @@ const game = (function () {
                 result = checkWinner()
                 currentPlayer = changePlayer(currentPlayer, p1, p2);
                 handleGameResult(result, p1, p2)
-
-
             });
 
             box.addEventListener("mouseenter", () => {
                 const boxImg = box.querySelector("img");
                 boxImg.src = "../markers/mark" + currentPlayer.marker + ".svg";
+                boxImg.classList.add("fadeIn");
                 boxImg.style.opacity = 0.35;
             })
 
